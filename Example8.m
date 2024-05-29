@@ -27,27 +27,60 @@ P.n_background = 1.45; % [] (may be complex) Background refractive index, (in th
 P.n_0 = 1.46; % [] reference refractive index
 P.Lz = 2e-3; % [m] z propagation distances for this segment
 
-P = initializeRIfromFunction(P,@calcRI);
+%% no taper
+[X,Y] = ndgrid(single(P.x),single(P.y));
+P.n.n = single(calcRI(X,Y,P.n_background,1));
+
+P.n.Lx = P.dx*size(P.n.n,1);
+P.n.Ly = P.dy*size(P.n.n,2);
+P.n.xSymmetry = P.xSymmetry;
+P.n.ySymmetry = P.ySymmetry;
+
+
+figure()
+mesh(P.n.n)
 
 % We search for the 10 modes with effective refractive index closest to
 % n_0:
 P = findModes(P,10);
 
-P.E = P.modes(9); % The 9th mode is an LP31o-like mode
-
-% Run solver
-FD_BPM(P);
-
-%% USER DEFINED RI FUNCTIONS
-function n = calcRI(X,Y,n_background,nParameters)
-% n may be complex
-n = n_background*ones(size(X)); % Start by setting all pixels to n_background
-% Core 1 is step index:
-n((X + 2.5e-6).^2 + Y.^2 < 5e-6^2) = 1.46;
-
-% Core 2 is graded index:
-corepos = [5e-6 0];
-r = 2.5e-6;
-R = sqrt((X - corepos(1)).^2 + (Y - corepos(2)).^2);
-n(R < r) = n_background + (1.47 - n_background)*(1 - (R(R < r)/r).^2); % Equation for parabolic graded index core
+figure(123)
+for k1 = 1:9
+    subplot(3,3,k1)
+    mesh(abs(P.modes(k1).field)); view([0 0 1])
 end
+
+%% explaining how to taper
+nBefore = single(calcRI(X,Y,P.n_background,1));
+nAfter  = single(calcRI(X,Y,P.n_background,2));
+
+figure()
+subplot(1,2,1)
+mesh(X,Y,nBefore); view([0 0 1])
+subplot(1,2,2)
+mesh(X,Y,nAfter); view([0 0 1])
+
+%% tapered by a factor of 2
+[X,Y] = ndgrid(single(P.x),single(P.y));
+P.n.n = single(calcRI(X,Y,P.n_background,2));
+
+P.n.Lx = P.dx*size(P.n.n,1);
+P.n.Ly = P.dy*size(P.n.n,2);
+P.n.xSymmetry = P.xSymmetry;
+P.n.ySymmetry = P.ySymmetry;
+
+
+figure()
+mesh(P.n.n)
+
+% We search for the 10 modes with effective refractive index closest to
+% n_0:
+P = findModes(P,10);
+
+figure(256)
+for k1 = 1:9
+    subplot(3,3,k1)
+    mesh(abs(P.modes(k1).field)); view([0 0 1])
+end
+
+

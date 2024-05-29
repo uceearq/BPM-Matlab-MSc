@@ -178,46 +178,46 @@ P.modes = P.modes(sortedidxs(1:min(numel(P.modes),nModes)));
 
 fprintf('\b Done, %.1f seconds elapsed.\n%d guided modes found.\n',toc,numel(P.modes));
 
-for iMode = 1:numel(P.modes)
-  P.modes(iMode).label = ['Mode ' num2str(iMode) P.modes(iMode).label];
-  if plotModes
-    E = P.modes(iMode).field;
-    h_f = figure(100+iMode);
-    h_f.WindowStyle = 'docked';
-    subplot(1,2,1);
-    imagesc(x,y,abs(E.').^2);
-    axis equal; axis tight; axis xy;
-    setColormap(gca,P.intensityColormap);
-    subplot(1,2,2);
-    imagesc(x,y,angle(E.'),'AlphaData',max(0,(1+log10(abs(E.'/max(E(:))).^2)/3)));
-    set(gca,'Color',0.7*[1 1 1]);  % To set the color corresponding to phase outside the cores where there is no field at all
-    caxis([-pi pi]);
-    axis equal; axis tight; axis xy;
-    setColormap(gca,P.phaseColormap);
-    neff = P.modes(iMode).neff;
-    if ~verLessThan('matlab','9.5')
-      if anycomplex
-        sgtitle({[P.modes(iMode).label ', n_{eff} = ' num2str(real(neff),'%.6g') ' + ' num2str(imag(neff),'%.3g') 'i'],['rough loss estimate: ' num2str(imag(neff)*4*pi/P.lambda,'%.3g') ' m^{-1} (' num2str(-10*log10(exp(-1))*imag(neff)*4*pi/P.lambda,'%.3g') ' dB/m)']});
-      else
-        sgtitle({[P.modes(iMode).label ', n_{eff} = ' num2str(real(neff),'%.6g')],['rough loss estimate: ' num2str(imag(neff)*4*pi/P.lambda,'%.3g') ' m^{-1} (' num2str(-10*log10(exp(-1))*imag(neff)*4*pi/P.lambda,'%.3g') ' dB/m)']});
-      end
-    end
-  end
-end
-drawnow;
-end
-
-function setColormap(gca,colormapType)
-switch colormapType
-  case 'GPBGYR'
-    colormap(gca,GPBGYRcolormap);
-  case 'HSV'
-    colormap(gca,hsv/1.5);
-  case 'Parula'
-    colormap(gca,parula);
-  case 'Gray'
-    colormap(gca,gray);
-  case 'Cividis'
-    colormap(gca,cividisColormap);
-end
-end
+% % % for iMode = 1:numel(P.modes)
+% % %   P.modes(iMode).label = ['Mode ' num2str(iMode) P.modes(iMode).label];
+% % %   if plotModes
+% % %     E = P.modes(iMode).field;
+% % %     h_f = figure(100+iMode);
+% % %     h_f.WindowStyle = 'docked';
+% % %     subplot(1,2,1);
+% % %     imagesc(x,y,abs(E.').^2);
+% % %     axis equal; axis tight; axis xy;
+% % %     setColormap(gca,P.intensityColormap);
+% % %     subplot(1,2,2);
+% % %     imagesc(x,y,angle(E.'),'AlphaData',max(0,(1+log10(abs(E.'/max(E(:))).^2)/3)));
+% % %     set(gca,'Color',0.7*[1 1 1]);  % To set the color corresponding to phase outside the cores where there is no field at all
+% % %     caxis([-pi pi]);
+% % %     axis equal; axis tight; axis xy;
+% % %     setColormap(gca,P.phaseColormap);
+% % %     neff = P.modes(iMode).neff;
+% % %     if ~verLessThan('matlab','9.5')
+% % %       if anycomplex
+% % %         sgtitle({[P.modes(iMode).label ', n_{eff} = ' num2str(real(neff),'%.6g') ' + ' num2str(imag(neff),'%.3g') 'i'],['rough loss estimate: ' num2str(imag(neff)*4*pi/P.lambda,'%.3g') ' m^{-1} (' num2str(-10*log10(exp(-1))*imag(neff)*4*pi/P.lambda,'%.3g') ' dB/m)']});
+% % %       else
+% % %         sgtitle({[P.modes(iMode).label ', n_{eff} = ' num2str(real(neff),'%.6g')],['rough loss estimate: ' num2str(imag(neff)*4*pi/P.lambda,'%.3g') ' m^{-1} (' num2str(-10*log10(exp(-1))*imag(neff)*4*pi/P.lambda,'%.3g') ' dB/m)']});
+% % %       end
+% % %     end
+% % %   end
+% % % end
+% % % drawnow;
+% % % end
+% % % 
+% % % function setColormap(gca,colormapType)
+% % % switch colormapType
+% % %   case 'GPBGYR'
+% % %     colormap(gca,GPBGYRcolormap);
+% % %   case 'HSV'
+% % %     colormap(gca,hsv/1.5);
+% % %   case 'Parula'
+% % %     colormap(gca,parula);
+% % %   case 'Gray'
+% % %     colormap(gca,gray);
+% % %   case 'Cividis'
+% % %     colormap(gca,cividisColormap);
+% % % end
+% % % end
