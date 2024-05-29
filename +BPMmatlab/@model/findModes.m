@@ -113,9 +113,9 @@ for iCore = 1:nCores
   kappa = (1-real(D))/dz*P.lambda/(4*pi);
   realn = sqrt(P.n_0^2 - 2*P.n_0*imag(D/(dz*k_0)));
 
-  neff = realn(realn > P.n_background) + 1i*kappa((realn > P.n_background));
-  V = V(:,realn > P.n_background);
-  D = D(realn > P.n_background);
+  neff = realn;%realn(realn > P.n_background) + 1i*kappa((realn > P.n_background));
+  % V = V(:,realn > P.n_background);
+  % D = D(realn > P.n_background);
   
   for iCoreMode = 1:numel(D)
     iMode = iMode + 1;

@@ -1,3 +1,6 @@
+clear all
+close all
+
 P = BPMmatlab.model;
 
 % This example shows that modes can be found and stored in the parameters
@@ -42,13 +45,15 @@ mesh(P.n.n)
 
 % We search for the 10 modes with effective refractive index closest to
 % n_0:
-P = findModes(P,10);
+P = findModes(P,20);
 
 figure(123)
 for k1 = 1:9
     subplot(3,3,k1)
     mesh(abs(P.modes(k1).field)); view([0 0 1])
 end
+
+neff(:,1) = [P.modes.neff];
 
 %% explaining how to taper
 nBefore = single(calcRI(X,Y,P.n_background,1));
@@ -75,7 +80,7 @@ mesh(P.n.n)
 
 % We search for the 10 modes with effective refractive index closest to
 % n_0:
-P = findModes(P,10);
+P = findModes(P,20);
 
 figure(256)
 for k1 = 1:9
@@ -83,4 +88,11 @@ for k1 = 1:9
     mesh(abs(P.modes(k1).field)); view([0 0 1])
 end
 
+neff(:,2) = [P.modes.neff];
 
+%% modes effective index
+figure()
+plot(1:20,neff)
+
+figure()
+plot([1 2],neff.')
