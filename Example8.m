@@ -92,7 +92,7 @@ neff(:,2) = [P.modes.neff];
 
 %% modes effective index
 figure()
-plot(1:20,neff)
+plot(1:10,neff)
 
 figure()
 plot([1 2],neff.')
